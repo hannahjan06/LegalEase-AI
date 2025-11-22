@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/last-commit/your-username/legalease" alt="last commit">
-  <img src="https://img.shields.io/github/languages/top/your-username/legalease?color=1b4b9c&label=top%20language" alt="Python">
-  <img src="https://img.shields.io/github/languages/count/your-username/legalease?label=languages" alt="languages">
+  <img src="https://img.shields.io/github/last-commit/hannahjan06/Legal_docs" alt="last commit">
+  <img src="https://img.shields.io/github/languages/top/hannahjan06/Legal_docs?color=1b4b9c&label=top%20language" alt="Python">
+  <img src="https://img.shields.io/github/languages/count/hannahjan06/Legal_docs?label=languages" alt="languages">
 </p>
 
 <p align="center">
