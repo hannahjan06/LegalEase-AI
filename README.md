@@ -15,12 +15,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Google%20Gemini-black?style=for-the-badge&logo=google&logoColor=white">
-  <img src="https://img.shields.io/badge/FastAPI-089981?style=for-the-badge&logo=fastapi&logoColor=white">
-  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white">
-  <img src="https://img.shields.io/badge/GCP-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white">
+  <img src="https://img.shields.io/badge/Hugging%20Face-FFCC00?style=for-the-badge&logo=huggingface&logoColor=black">
+  <img src="https://img.shields.io/badge/Python-3572A5?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white">
+  <img src="https://img.shields.io/badge/Gemini%20API-000000?style=for-the-badge&logo=google&logoColor=white">
 </p>
-
 
 ## Overview
 
