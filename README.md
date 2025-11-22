@@ -1,94 +1,152 @@
-# 📜 Legal document AI (demo) – AI-Powered Legal Document Simplifier
+<h1 align="center">LegalEase AI</h1>
 
-Making complex legal docs simple, clear, and accessible for everyone. 🚀
+<p align="center">
+  AI-Powered Legal Document Simplification and Analysis
+</p>
 
----
-### 🌟 Overview
+<p align="center">
+  <img src="https://img.shields.io/github/last-commit/your-username/legalease" alt="last commit">
+  <img src="https://img.shields.io/github/languages/top/your-username/legalease?color=1b4b9c&label=top%20language" alt="Python">
+  <img src="https://img.shields.io/github/languages/count/your-username/legalease?label=languages" alt="languages">
+</p>
 
-LegalEase is a web application that helps users upload legal documents (like rental agreements, loan contracts, ToS, etc.) and instantly receive:
+<p align="center">
+  Built using:
+</p>
 
-✅ Simplified summaries in plain language
+<p align="center">
+  <img src="https://img.shields.io/badge/Google%20Gemini-black?style=for-the-badge&logo=google&logoColor=white">
+  <img src="https://img.shields.io/badge/FastAPI-089981?style=for-the-badge&logo=fastapi&logoColor=white">
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white">
+  <img src="https://img.shields.io/badge/GCP-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white">
+</p>
 
-✅ Visual flowcharts of key terms and clauses
 
-✅ Highlighted risk flags (legal, financial, compliance, privacy)
+## Overview
 
-Built for the Google Cloud Hackathon, this project leverages Google Cloud Generative AI (Gemini API) + custom ML agents to make legal knowledge accessible.
-
----
-### 🖥️ Features
-
-User Authentication → Signup/Login with a clean, modern UI
-PDF Upload Support → Upload contracts, agreements, and other docs
-
----
-### AI Agents Pipeline:
-
-📄 PDF Reader Agent → Extracts text (OCR via pytesseract + pdf2image)
-
-✍️ Summarization Agent → Clause-level summaries + TL;DR
-
-⚠️ Structuring Agent → Identifies risks (legal, compliance, financial, privacy)
-
-📊 Flowchart Agent → Generates an easy-to-follow flowchart of key terms
-
-Chatbot Interface → Users can ask questions about their document
-
-Light Brown Aesthetic → Minimal, warm UI for clarity
+LegalEase AI is a web platform designed to simplify complex legal documents using structured AI agents. Users can upload agreements, policies, contracts, and other legal files, and the system automatically generates simplified summaries, risk assessments, and visual flowcharts for faster understanding. The project demonstrates the practical use of generative AI for legal assistance, clarity, and accessibility.
 
 ---
-### 🏗️ Tech Stack
 
-Frontend:
-Next.js / React
-TailwindCSS
-(Gemini CLI-generated base UI, with agent integration placeholders)
+## Core Features
 
-Backend / AI Agents:
-Python (FastAPI/Flask for APIs)
-Pytesseract + pdf2image (OCR for PDFs)
-Google Cloud Storage (for raw & processed docs)
-Gemini API (for summarization, structuring, flowchart generation)
+* **User Authentication**
+  Secure signup and login with a modern UI.
 
-Cloud:
-Google Cloud Platform (GCP)
-Vertex AI / Generative AI Studio
-GCS for document storage
+* **Document Upload Support**
+  PDF upload with OCR processing for scanned files.
+
+* **AI Agent Pipeline**
+
+  * PDF Reader Agent (OCR + text extraction)
+  * Summarization Agent (section-level simplification)
+  * Structuring Agent (risk and clause analysis)
+  * Flowchart Agent (visual representation of key relationships)
+
+* **Interactive Chat Interface**
+  Users can ask clarifying questions about the uploaded document.
+
+* **Modern UI Design**
+  Clean, minimal interface prioritizing readability and structure.
+
 ---
-### ⚙️ Installation
-1️⃣ Clone the repo
-```git clone https://github.com/your-username/legalease.git
+
+## How It Works
+
+1. The user authenticates and uploads a legal document.
+2. The document is stored in Google Cloud Storage.
+3. The PDF Reader agent extracts and preprocesses text.
+4. The Summarization and Structuring agents analyze the content.
+5. The Flowchart agent produces a visual logic diagram of key clauses.
+6. Users view results through a dashboard and chatbot interface.
+
+---
+
+## Tech Stack
+
+| Layer         | Technologies                     |
+| ------------- | -------------------------------- |
+| Frontend      | Next.js, React, TailwindCSS      |
+| Backend       | FastAPI or Flask                 |
+| AI Processing | Google Gemini API, Python agents |
+| OCR           | pytesseract, pdf2image           |
+| Cloud         | Google Cloud Storage, Vertex AI  |
+| Deployment    | GCP services                     |
+
+---
+
+## Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/legalease.git
 cd legalease
 ```
 
-2️⃣ Setup Frontend
-```cd frontend
+### 2. Frontend Setup
+
+```bash
+cd frontend
 npm install
 npm run dev
 ```
 
-3️⃣ Setup Backend
-```cd backend
+### 3. Backend Setup
+
+```bash
+cd backend
 pip install -r requirements.txt
 uvicorn app:main --reload
 ```
 
-### 📂 Project Structure
-```/frontend
-   /components   → UI components (chatbot, auth, upload)
-   /pages        → login, signup, dashboard
-   /styles       → Tailwind config
-/backend
-   /agents       → PDF Reader, Summarizer, Structurer, Flowchart
-   /utils        → GCS helpers, error handling
-   app.py        → FastAPI entry point
-```
 ---
-### 🚦 Workflow
-1. User signs up / logs in
-2. Uploads PDF → saved in Google Cloud Storage
-3. PDF Reader Agent extracts text → saves to processed bucket
-4. Summarization Agent simplifies text
-5. Structuring Agent flags risks → JSON output
-6. Flowchart Agent creates visual explanation
-7. User views simplified doc + flowchart in chatbot UI
+
+## Project Structure
+
+```bash
+/frontend
+   /components        # UI components including chatbot and upload interface
+   /pages             # login, signup, dashboard screens
+   /styles            # Tailwind configuration
+
+/backend
+   /agents            # PDF Reader, Summarizer, Structurer, Flowchart logic
+   /utils             # Cloud storage helpers and error handling
+   app.py             # FastAPI entry point
+```
+
+---
+
+## Workflow
+
+1. User logs in.
+2. PDF document is uploaded and stored.
+3. OCR extracts text where necessary.
+4. AI agents analyze and structure document content.
+5. Flowchart and simplified summary are generated.
+6. Processed results are delivered through the dashboard and chatbot.
+
+---
+
+## Roadmap
+
+* Multi-language support
+* Clause comparison between similar contract types
+* Exportable simplified reports
+* Versioning for document history
+* Fine-tuned legal language models for more accuracy
+
+---
+
+## Contributing
+
+Contributions are welcome in interface refinement, AI pipeline improvements, dataset expansion, or document parsing. Submit a pull request with clear documentation.
+
+---
+
+## Acknowledgements
+
+* Google Cloud Platform for compute, storage, and generative AI services
+* Open-source OCR frameworks supporting document accessibility
+* Legal research datasets used for testing and benchmarking
