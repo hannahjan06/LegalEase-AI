@@ -1,0 +1,117 @@
+manifest:
+  version: "0.1.3"
+  schema: https://a2as.org/cert/schema
+  subject:
+    name: hannahjan06/legalease-ai
+    source: https://github.com/hannahjan06/legalease-ai
+    branch: main
+    commit: "6e677035"
+    scope: [adk_agent/subagents/preprocess/preprocess.py, adk_agent/subagents/parsing/__init__.py, adk_agent/agent.py, adk_agent/subagents/risk/risk.py,
+      adk_agent/subagents/summary/__init__.py, adk_agent/subagents/risk/__init__.py, adk_agent/subagents/summary/summary.py,
+      adk_agent/subagents/preprocess/__init__.py, adk_agent/subagents/parsing/parse.py]
+  issued:
+    by: A2AS.org
+    at: '2026-02-11T16:40:08Z'
+    url: https://a2as.org/certified/agents/hannahjan06/legalease-ai
+  signatures:
+    digest: sha256:YAdxifyZAAUz38jbBxTt3nFG2B2vItWByVmf8gJI4tQ
+    key: ed25519:HZxxkQsPshWOejiBfqD_3NfqWVL3sH9xYa5kSqSfSVI
+    sig: ed25519:augaomjvJnBnkwGJ64EXEmZ8oriJtqyvCjxKEZtnQO_ApJg0IYRcmvaSESU4jLKXmuten6UgbV0cGafCspwfBw
+
+agents:
+  flow_pipeline:
+    type: instance
+    params:
+      name: RootAgent
+      description: Creates a summary and risk analyser
+      sub_agents: [risk_agent, summary_agent]
+  parse_pipeline:
+    type: instance
+    params:
+      name: ParsingPipelineAgent
+      description: Executes a sequence of parsing and preprocessing on legal documents.
+      sub_agents: [parsing_agent, preprocess_agent]
+  parsing_agent:
+    type: instance
+    models: [gemini-2.0-flash]
+    params:
+      name: parsing_agent
+      instruction: [You are a Legal Document Reader AI., 'Your role is to read uploaded legal texts (contracts, agreements,
+          PDFs)', and provide the content exactly as it appears in the document., 'Guidelines:', '- Do not summarize, reword,
+          or restructure the text.', '- Output the text exactly as written in the source document.', '- Include all sections,
+          clauses, dates, parties, and monetary terms as they appear.', '- If text is missing or unclear, indicate it as [text
+          not found] rather than guessing.', '- Maintain original formatting and wording wherever possible.']
+      description: Reads legal/contract PDFs and provides natural language answers.
+  preprocess_agent:
+    type: instance
+    models: [gemini-2.0-flash]
+    params:
+      name: preprocess_agent
+      instruction: [You are a Legal Document Parsing AI., 'Your role is to read uploaded texts (contracts, agreements, PDFs)',
+        and output structured JSON with the most relevant details., 'Guidelines:', '- Focus on extracting entities like: parties,
+          dates, clauses, obligations, risks,', 'monetary values, jurisdiction, and termination conditions.', '- Do not hallucinate:
+          if a field isn’t present, leave it null.', '- Keep field names consistent across documents.', '- Be precise and
+          concise; avoid long explanations.', 'Output format (strict):', '{', '"parties": ["Party A", "Party B"],', '"dates":
+          {', '"start_date": "...",', '"end_date": "...",', '"signature_date": "..."', '},', '"clauses": ["Summarized clause
+          1", "Summarized clause 2"],', '"obligations": ["Duty 1", "Duty 2"],', '"risks": ["Risk 1", "Risk 2"],', '"monetary_terms":
+          ["Payment terms", "Amounts"],', '"jurisdiction": "Court/region",', '"termination": "Conditions under which contract
+          ends"', '}']
+      description: Parses legal/contract PDFs into structured JSON.
+  risk_agent:
+    type: instance
+    models: [gemini-2.0-flash]
+    params:
+      name: risk_flagger_agent
+      instruction: [You are a Legal Risk Extraction AI., 'Your input will be a JSON object extracted from a legal document,',
+        'which may contain parties, dates, clauses, obligations, risks, monetary terms, and termination info.', 'Your task:',
+        '- Extract all risk-related information present in the JSON.', '- Output a structured JSON with only the risks.',
+        '- If no risks are mentioned, return an empty list.', '- Do not hallucinate or add information not in the input.',
+        'Output format (strict JSON):', '{', '"risks": [', '"Risk 1",', '"Risk 2",', "...", ']', '}']
+      description: Extracts and outputs risks from parsed legal JSON.
+  root_agent:
+    type: instance
+    params:
+      name: RootSequentialAgent
+      description: Executes the full pipeline from parsing to risk analysis and summary.
+      sub_agents: [parse_pipeline, flow_pipeline]
+  summary_agent:
+    type: instance
+    models: [gemini-2.0-flash]
+    params:
+      name: legal_summarizer_agent
+      instruction: [You are a Legal Clause Summarizer AI., 'Your input will be a JSON object extracted from a legal document,',
+        'containing clauses, parties, dates, obligations, risks, and monetary terms.', 'Your task:', 1. Generate a short summary
+          for each clause., 2. Generate a concise summary for the whole document., 3. Use clear headlines for each section
+          so it can be used to make a flowchart., 'Example:', '--- Clause Summaries ---', 'Clause 1: [summary]', 'Clause 2:
+          [summary]', "...", '--- Whole Document Summary ---', '[summary]', 'Guidelines:', '- Summaries should be in simple
+          language, 1-2 sentences per clause.', '- The whole document summary should capture key points (parties, dates, obligations,
+          risks, monetary terms, termination).', '- Do not add information not present in the JSON.', '- Keep the output clean
+          and easy to read for flowchart conversion.']
+      description: Generates per-clause and whole-document summaries for legal PDFs.
+
+models:
+  gemini-2.0-flash:
+    type: literal
+    agents: [preprocess_agent, risk_agent, summary_agent, parsing_agent]
+
+teams:
+  flow_pipeline:
+    type: parallel
+    agents: [flow_pipeline, risk_agent, summary_agent]
+  parse_pipeline:
+    type: sequential
+    agents: [parse_pipeline, parsing_agent, preprocess_agent]
+  root_agent:
+    type: sequential
+    agents: [root_agent, parse_pipeline, flow_pipeline]
+
+imports:
+  Agent: google.adk.agents.Agent
+  google_search: google.adk.tools.google_search
+  InMemorySessionService: google.adk.sessions.InMemorySessionService
+  ParallelAgent: google.adk.agents.ParallelAgent
+  parsing_agent: adk_agent.subagents.parsing.parsing_agent
+  preprocess_agent: preprocess.preprocess_agent
+  risk_agent: risk.risk_agent
+  SequentialAgent: google.adk.agents.SequentialAgent
+  summary_agent: summary.summary_agent
